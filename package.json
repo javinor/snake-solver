@@ -1,0 +1,22 @@
+{
+  "name": "snake-cube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "snakeCubeSolver.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint",
+    "start": "node snakeCubeSolver"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.10.2",
+    "eslint-config-javi": "git+ssh://git@github.com/javinor/eslint-config-javi.git"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": "javi"
+  }
+}
