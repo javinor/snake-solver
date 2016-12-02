@@ -37,22 +37,21 @@ class Cube {
 
 // ///////////////////////////////////////////
 
-const snakeSolver = (cube, snake, snakeIndex, location, direction) => {
-  if (snakeIndex === snake.length - 1) {
-    console.log('success')
-    return []
-  }
+const getNextDirections = (direction, toTurn) => {
+  return toTurn ? units.filter(unit => dot(...direction, ...unit) === 0) : [direction]
+}
+
+const recursiveSnakeSolver = (cube, snake, snakeIndex, location, direction) => {
+  if (snakeIndex === snake.length - 1) return []
 
   cube.set(...location)
 
-  const newDirections = (snake[snakeIndex] === 0)
-    ? [direction]
-    : units.filter(unit => dot(...direction, ...unit) === 0)
+  const newDirections = getNextDirections(direction, snake[snakeIndex])
 
   for (let i = 0, len = newDirections.length; i < len; i++) {
     const newLocation = add(...location, ...newDirections[i])
     if (!cube.isOutOfBounds(...newLocation) && !cube.has(...newLocation)) {
-      let res = snakeSolver(cube, snake, snakeIndex + 1, newLocation, newDirections[i])
+      let res = recursiveSnakeSolver(cube, snake, snakeIndex + 1, newLocation, newDirections[i])
       if (res) return [newDirections[i]].concat(res)      
     }
   }
@@ -60,18 +59,23 @@ const snakeSolver = (cube, snake, snakeIndex, location, direction) => {
   cube.unset(...location)
 }
 
+const snakeSolver = (snake) => {
+  const size = Math.cbrt(snake.length)
+  const cube = new Cube(size)
+
+  return recursiveSnakeSolver(cube, snake, 0, [0,0,0], units[0])
+}
+
 // ////////////////////////////////////
 
-const size = 3
 const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
-
-// const size = 4
 // const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
 
-
-const cube = new Cube(size)
 var startTime = Date.now()
-const res = snakeSolver(cube, snake, 0, [0, 0, 0],  units[0])
+
+// const res = recursiveSnakeSolver(cube, snake, 0, [0, 0, 0],  units[0])
+const res = snakeSolver(snake, 0, [0, 0, 0],  units[0])
+
 console.log(`Solution took ${Date.now() - startTime} ms`)
 console.log(JSON.stringify(res))
 console.log(res.map(vec => directions[vec]))
