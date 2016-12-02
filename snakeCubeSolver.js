@@ -10,7 +10,10 @@ const directions = {
   [[0,0,-1]]: 'back'
 }
 
-const printPath = (path) => {
+const add = (x1, y1, z1, x2, y2, z2) => [x1 + x2, y1 + y2, z1 + z2]
+const dot = (x1, y1, z1, x2, y2, z2) => x1 * x2 + y1 * y2 + z1 * z2
+
+const getInstructionsFromPath = (path) => {
   return path
     .map(vec => directions[vec])
     .filter((v, i, arr) => {
@@ -18,8 +21,6 @@ const printPath = (path) => {
     })
 }
 
-const add = (x1, y1, z1, x2, y2, z2) => [x1 + x2, y1 + y2, z1 + z2]
-const dot = (x1, y1, z1, x2, y2, z2) => x1 * x2 + y1 * y2 + z1 * z2
 
 class Cube {
   constructor(size) {
@@ -36,20 +37,11 @@ class Cube {
 
 // ///////////////////////////////////////////
 
-const snakeSolver = (cube, snake, snakeIndex, location, direction, path) => {
-  if (snakeIndex > 60) console.log('>>>' + snakeIndex)
-  if (snakeIndex >= 64) console.log('>>>>>>>>>>>>>' + snakeIndex)
-
-  if (snakeIndex >= snake.length) {
-    console.log('success!')
-    // console.log(JSON.stringify(path))
-    // console.log(path.map(dir => directions[dir]))
-    console.log(printPath(path))
-    return
+const snakeSolver = (cube, snake, snakeIndex, location, direction) => {
+  if (snakeIndex === snake.length - 1) {
+    console.log('success')
+    return []
   }
-
-  if (cube.isOutOfBounds(...location)) return
-  if (cube.has(...location)) return
 
   cube.set(...location)
 
@@ -57,27 +49,30 @@ const snakeSolver = (cube, snake, snakeIndex, location, direction, path) => {
     ? [direction]
     : units.filter(unit => dot(...direction, ...unit) === 0)
 
-  newDirections
-    .forEach(newDirection => {
-      const newPath = path.concat([newDirection])
-      
-      snakeSolver(cube, snake, snakeIndex + 1, add(...location, ...newDirection), newDirection, newPath)
-    })
+  for (let i = 0, len = newDirections.length; i < len; i++) {
+    const newLocation = add(...location, ...newDirections[i])
+    if (!cube.isOutOfBounds(...newLocation) && !cube.has(...newLocation)) {
+      let res = snakeSolver(cube, snake, snakeIndex + 1, newLocation, newDirections[i])
+      if (res) return [newDirections[i]].concat(res)      
+    }
+  }
 
   cube.unset(...location)
 }
 
 // ////////////////////////////////////
 
-// const size = 3
-// const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
+const size = 3
+const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
 
-const size = 4
-const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
-
-
+// const size = 4
+// const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
 
 
 const cube = new Cube(size)
-snakeSolver(cube, snake, 0, [0, 0, 0],  units[0], [])
+var startTime = Date.now()
+const res = snakeSolver(cube, snake, 0, [0, 0, 0],  units[0])
+console.log(`Solution took ${Date.now() - startTime} ms`)
+console.log(JSON.stringify(res))
+console.log(res.map(vec => directions[vec]))
 
