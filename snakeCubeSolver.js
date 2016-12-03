@@ -7,7 +7,7 @@ const directions = require('./src/unit-names')
 const add = (u, v) => [u[0] + v[0], u[1] + v[1], u[2] + v[2]]
 const dot = (u, v) => u.reduce((sum, _, i) => sum + u[i] * v[i], 0)
 
-const unitToPerp = units.reduce((acc, unit) => {
+const unitToPerps = units.reduce((acc, unit) => {
   acc[unit] = units.filter(u => dot(u, unit) === 0)
   return acc
 }, {})
@@ -28,7 +28,7 @@ class Cube {
 // ///////////////////////////////////////////
 
 const getNextDirections = (direction, toTurn) => {
-  return toTurn ? unitToPerp[direction] : [direction]
+  return toTurn ? unitToPerps[direction] : [direction]
 }
 
 const recursiveSnakeSolver = (cube, snake, snakeIndex, location, direction) => {
