@@ -32,18 +32,18 @@ const getNextDirections = (direction, toTurn) => {
   return toTurn ? unitToPerps[direction] : [direction]
 }
 
-const recursiveSnakeSolver = (cube, snake, snakeIndex, location, direction) => {
-  if (snakeIndex === snake.length - 1) return []
+const recursiveSnakeSolver = (cube, snake, index, location, direction) => {
+  if (index === snake.length - 1) return []
 
   cube.set(location)
 
-  const newDirections = getNextDirections(direction, snake[snakeIndex])
+  const nextDirections = getNextDirections(direction, snake[index])
 
-  for (let i = 0, len = newDirections.length; i < len; i++) {
-    const newLocation = add(location, newDirections[i])
+  for (let i = 0, len = nextDirections.length; i < len; i++) {
+    const newLocation = add(location, nextDirections[i])
     if (!cube.isOutOfBounds(newLocation) && !cube.has(newLocation)) {
-      let res = recursiveSnakeSolver(cube, snake, snakeIndex + 1, newLocation, newDirections[i])
-      if (res) return [newDirections[i]].concat(res)
+      let res = recursiveSnakeSolver(cube, snake, index + 1, newLocation, nextDirections[i])
+      if (res) return [nextDirections[i]].concat(res)
     }
   }
 
