@@ -12,14 +12,6 @@ const unitToPerp = units.reduce((acc, unit) => {
   return acc
 }, {})
 
-const getInstructionsFromPath = (path) => {
-  return path
-    .map(vec => directions[vec])
-    .filter((v, i, arr) => {
-      return i === 0 || v !== arr[i - 1]
-    })
-}
-
 class Cube {
   constructor (size) {
     this.cube = Array.from(Array(size)).map(x => Array.from(Array(size)).map(y => [0, 0, 0]))
@@ -76,8 +68,16 @@ const snakeSolver = (snake) => {
 
 // ////////////////////////////////////
 
-const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
-// const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
+const getInstructionsFromPath = (path) => {
+  return path
+    .map(vec => directions[vec])
+    .filter((v, i, arr) => {
+      return i === 0 || v !== arr[i - 1]
+    })
+}
+
+// const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
+const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
 
 const startTime = Date.now()
 const res = snakeSolver(snake, 0, [0, 0, 0], units[0])
