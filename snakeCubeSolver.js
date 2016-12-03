@@ -72,18 +72,12 @@ const snakeSolver = (snake) => {
   const size = Math.cbrt(snake.length)
   const cube = new Cube(size)
 
+  // for each starting point & direction
   return startingPointsBySize[size].reduce((result, startingPoint) => {
-    return result || 
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[0]) ||
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[1]) ||
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[2]) ||
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[3]) ||
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[4]) ||
-      recursiveSnakeSolver(cube, snake, 0, startingPoint, units[5])
+    return result || units.reduce((res, unit) => {
+      return res || recursiveSnakeSolver(cube, snake, 0, startingPoint, unit)
+    }, false)
   }, false)
-
-
-    
 }
 
 // ////////////////////////////////////
