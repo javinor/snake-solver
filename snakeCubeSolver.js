@@ -17,10 +17,10 @@ class Cube {
     const arr = Array(size)
     this.cube = Array.from(arr, x => Array.from(arr, y => Array.from(arr, z => 0)))
   }
-  has (x, y, z) { return this.cube[x][y][z] === 1 }
-  set (x, y, z) { this.cube[x][y][z] = 1 }
-  unset (x, y, z) { this.cube[x][y][z] = 0 }
-  isOutOfBounds (x, y, z) {
+  has ([x, y, z]) { return this.cube[x][y][z] === 1 }
+  set ([x, y, z]) { this.cube[x][y][z] = 1 }
+  unset ([x, y, z]) { this.cube[x][y][z] = 0 }
+  isOutOfBounds ([x, y, z]) {
     const size = this.cube.length
     return x < 0 || y < 0 || z < 0 || size <= x || size <= y || size <= z
   }
@@ -35,19 +35,19 @@ const getNextDirections = (direction, toTurn) => {
 const recursiveSnakeSolver = (cube, snake, snakeIndex, location, direction) => {
   if (snakeIndex === snake.length - 1) return []
 
-  cube.set(...location)
+  cube.set(location)
 
   const newDirections = getNextDirections(direction, snake[snakeIndex])
 
   for (let i = 0, len = newDirections.length; i < len; i++) {
     const newLocation = add(location, newDirections[i])
-    if (!cube.isOutOfBounds(...newLocation) && !cube.has(...newLocation)) {
+    if (!cube.isOutOfBounds(newLocation) && !cube.has(newLocation)) {
       let res = recursiveSnakeSolver(cube, snake, snakeIndex + 1, newLocation, newDirections[i])
       if (res) return [newDirections[i]].concat(res)
     }
   }
 
-  cube.unset(...location)
+  cube.unset(location)
 }
 
 const startingPointsBySize = {
