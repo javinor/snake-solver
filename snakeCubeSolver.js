@@ -1,14 +1,7 @@
 'use strict'
 
-const units = [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1]]
-const directions = {
-  [[1,0,0]]: 'left', 
-  [[-1,0,0]]: 'right', 
-  [[0,1,0]]: 'up', 
-  [[0,-1,0]]: 'down', 
-  [[0,0,1]]: 'forward', 
-  [[0,0,-1]]: 'back'
-}
+const units = require('./src/unit-vectors')
+const directions = require('./src/unit-names')
 
 const add = (x1, y1, z1, x2, y2, z2) => [x1 + x2, y1 + y2, z1 + z2]
 const dot = (x1, y1, z1, x2, y2, z2) => x1 * x2 + y1 * y2 + z1 * z2
