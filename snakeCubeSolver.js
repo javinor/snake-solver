@@ -39,11 +39,11 @@ const recursiveSnakeSolver = (cube, snake, index, location, direction) => {
 
   const nextDirections = getNextDirections(direction, snake[index])
 
-  for (let i = 0, len = nextDirections.length; i < len; i++) {
-    const newLocation = add(location, nextDirections[i])
+  for (const direction of nextDirections) {
+    const newLocation = add(location, direction)
     if (!cube.isOutOfBounds(newLocation) && !cube.has(newLocation)) {
-      let res = recursiveSnakeSolver(cube, snake, index + 1, newLocation, nextDirections[i])
-      if (res) return [nextDirections[i]].concat(res)
+      let res = recursiveSnakeSolver(cube, snake, index + 1, newLocation, direction)
+      if (res) return [direction].concat(res)
     }
   }
 
