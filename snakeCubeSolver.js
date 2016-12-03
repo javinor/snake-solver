@@ -42,8 +42,8 @@ const recursiveSnakeSolver = (cube, snake, index, location, direction) => {
   for (const direction of nextDirections) {
     const newLocation = add(location, direction)
     if (!cube.isOutOfBounds(newLocation) && !cube.has(newLocation)) {
-      let res = recursiveSnakeSolver(cube, snake, index + 1, newLocation, direction)
-      if (res) return [direction].concat(res)
+      const path = recursiveSnakeSolver(cube, snake, index + 1, newLocation, direction)
+      if (path) return [direction].concat(path)
     }
   }
 
