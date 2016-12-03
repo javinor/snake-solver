@@ -85,14 +85,13 @@ const snakeSolver = (snake) => {
 const snake = [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0]
 // const snake = [0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0]
 
-var startTime = Date.now()
-
+const startTime = Date.now()
 const res = snakeSolver(snake, 0, [0, 0, 0],  units[0])
 
 if (res) {
   console.log(`Solution took ${Date.now() - startTime} ms`)
-  console.log(JSON.stringify(res))
-  console.log(res.map(vec => directions[vec]))
+  console.log(`------------------------------------------`)
+  console.log(getInstructionsFromPath(res).join('\n'))
 } else {
   console.log('no solution found')
 }
