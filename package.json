@@ -4,6 +4,7 @@
   "description": "",
   "main": "snakeCubeSolver.js",
   "scripts": {
+    "check": "npm-check -u",
     "lint": "eslint .",
     "test": "npm run lint",
     "start": "node snakeCubeSolver"
@@ -13,7 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^3.10.2",
-    "eslint-config-javi": "git+ssh://git@github.com/javinor/eslint-config-javi.git"
+    "eslint-config-javi": "javinor/eslint-config-javi.git",
+    "npm-check": "^5.4.0"
   },
   "eslintConfig": {
     "root": true,
