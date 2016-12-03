@@ -14,7 +14,8 @@ const unitToPerps = units.reduce((acc, unit) => {
 
 class Cube {
   constructor (size) {
-    this.cube = Array.from(Array(size)).map(x => Array.from(Array(size)).map(y => [0, 0, 0]))
+    const arr = Array(size)
+    this.cube = Array.from(arr, x => Array.from(arr, y => Array.from(arr, z => 0)))
   }
   has (x, y, z) { return this.cube[x][y][z] === 1 }
   set (x, y, z) { this.cube[x][y][z] = 1 }
